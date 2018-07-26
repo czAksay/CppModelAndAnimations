@@ -142,10 +142,7 @@ Window {
                             }
 
                             onClicked: {
-                                if (saveColorName.text.length > 0)
-                                    ColorController.add(saveColorName.text, getColorFromSliders());
-                                else
-                                    ColorController.add("no name", getColorFromSliders());
+                                ColorController.add(saveColorName.text.length > 0 ? saveColorName.text : "no name", getColorFromSliders());
                             }
                         }
                     }
@@ -249,6 +246,7 @@ Window {
 
                                 onMoveDown: {
                                     ColorController.move(index, index + 1);
+                                    //ColorController.move(2, 4);
                                 }
 
                                 onMoveUp: {

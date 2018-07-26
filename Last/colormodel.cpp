@@ -1,4 +1,5 @@
 #include "colormodel.h"
+#include <QDebug>
 
 ColorModel::ColorModel(QObject *parent) : QAbstractListModel(parent)
 {
@@ -48,14 +49,26 @@ void ColorModel::move(int old_index, int new_index)
     if(hasIndex(old_index, 0) && hasIndex(new_index, 0) && (old_index != new_index))
     {
         QModelIndex parent;
-        if (new_index > old_index && new_index < rowCount() - 1)
+        //qDebug() << "old_index: " << old_index << "\nnew_index: " << new_index << "\ncount: " << rowCount();
+        if (new_index == rowCount() - 1)
         {
-            new_index ++ ;
+            if(beginMoveRows(parent, new_index, new_index, parent, old_index))
+            {
+                m_colors.move(new_index, old_index);
+                endMoveRows();
+            }
         }
-        if(beginMoveRows(parent, old_index, old_index, parent, new_index))
+        else
         {
-            m_colors.move(old_index, new_index);
-            endMoveRows();
+            if (new_index > old_index)
+            {
+                new_index ++;
+            }
+            if(beginMoveRows(parent, old_index, old_index, parent, new_index))
+            {
+                m_colors.move(old_index, new_index);
+                endMoveRows();
+            }
         }
     }
 }

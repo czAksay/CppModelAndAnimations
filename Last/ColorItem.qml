@@ -22,15 +22,7 @@ Rectangle {
                 border.color: "transparent"
             }
             PropertyChanges {
-                target: imageX
-                opacity: 0
-            }
-            PropertyChanges {
-                target: imageDown
-                opacity: 0
-            }
-            PropertyChanges {
-                target: imageUp
+                target: rowWithButtons
                 opacity: 0
             }
         },
@@ -44,15 +36,7 @@ Rectangle {
                 border.color: "black"
             }
             PropertyChanges {
-                target: imageX
-                opacity: 1
-            }
-            PropertyChanges {
-                target: imageDown
-                opacity: 1
-            }
-            PropertyChanges {
-                target: imageUp
+                target: rowWithButtons
                 opacity: 1
             }
         }
@@ -104,92 +88,73 @@ Rectangle {
         }
     }
 
-    Image {
+    Row {
+        id: rowWithButtons
         property int marg: 6
-        id: imageX
-        x: 92
-        width: height
-        anchors.top: parent.top
-        anchors.topMargin: marg
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: marg
+        layoutDirection: Qt.RightToLeft
         anchors.right: parent.right
         anchors.rightMargin: marg
-        source: "img/x.png"
-
-        Behavior on opacity {
-            id: xOpacityAnimation
-            NumberAnimation {
-                duration: 300
-            }
-        }
-
-        MouseArea {
-            id: clickDel
-            anchors.fill: parent
-
-            onClicked: {
-                root.removed();
-            }
-        }
-    }
-
-    Image {
-        property int marg: 6
-        id: imageDown
-        x: 92
-        width: height
         anchors.top: parent.top
         anchors.topMargin: marg
         anchors.bottom: parent.bottom
         anchors.bottomMargin: marg
-        anchors.right: imageX.left
-        anchors.rightMargin: marg
-        source: "img/down.png"
+        spacing: marg
+
+        Image {
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+            width: height
+            source: "img/x.png"
+
+            MouseArea {
+                id: clickDel
+                anchors.fill: parent
+
+                onClicked: {
+                    root.removed();
+                }
+            }
+        }
+        Image {
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+            width: height
+            source: "img/down.png"
+
+            MouseArea {
+                id: clickDown
+                anchors.fill: parent
+
+                onClicked: {
+                    root.moveDown();
+                }
+            }
+        }
+        Image {
+            anchors.top: parent.top
+            anchors.topMargin: 0
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+            width: height
+            source: "img/up.png"
+
+            MouseArea {
+                id: clickUp
+                anchors.fill: parent
+                onClicked: {
+                    root.moveUp();
+                }
+            }
+        }
 
         Behavior on opacity {
-            id: xOpacityAnimation2
+            id: opacityAnimation
             NumberAnimation {
                 duration: 300
-            }
-        }
-
-        MouseArea {
-            id: clicDown
-            anchors.fill: parent
-
-            onClicked: {
-                root.moveDown();
-            }
-        }
-    }
-
-    Image {
-        property int marg: 6
-        id: imageUp
-        x: 92
-        width: height
-        anchors.right: imageDown.left
-        anchors.rightMargin: marg
-        anchors.top: parent.top
-        anchors.topMargin: marg
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: marg
-        source: "img/up.png"
-
-        Behavior on opacity {
-            id: xOpacityAnimation3
-            NumberAnimation {
-                duration: 300
-            }
-        }
-
-        MouseArea {
-            id: clicUp
-            anchors.fill: parent
-
-            onClicked: {
-                root.moveUp();
             }
         }
     }
