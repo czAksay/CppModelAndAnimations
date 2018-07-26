@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>img/x.png</file>
+        <file>ColorItem.qml</file>
+        <file>img/down.png</file>
+        <file>img/up.png</file>
+        <file>img/fon.jpg</file>
+    </qresource>
+</RCC>
