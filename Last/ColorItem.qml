@@ -4,12 +4,12 @@ Rectangle {
     id: root
     width: 230
     height: 27
-    property int fontSize: normalFontSize
     property int normalFontSize: 14
     property int hoveredFontSize: 18
     property string colorText: "Color name"
     property color currColor: "#ffffff"
     color: "#20808080"
+    state: "Normal"
 
     states: [
         State {
@@ -17,7 +17,6 @@ Rectangle {
             when: !mouseArea.containsMouse
             PropertyChanges {
                 target: root
-                fontSize: normalFontSize
                 color: "#20808080"
                 border.color: "transparent"
             }
@@ -25,13 +24,16 @@ Rectangle {
                 target: rowWithButtons
                 opacity: 0
             }
+            PropertyChanges {
+                target: textColorName
+                font.pixelSize: normalFontSize
+            }
         },
         State {
             name: "Hovered"
             when: mouseArea.containsMouse
             PropertyChanges {
                 target: root
-                fontSize: hoveredFontSize
                 color: "#90808080"
                 border.color: "black"
             }
@@ -39,22 +41,37 @@ Rectangle {
                 target: rowWithButtons
                 opacity: 1
             }
+            PropertyChanges {
+                target: textColorName
+                font.pixelSize: hoveredFontSize
+            }
         }
     ]
 
-    Behavior on color {
-        id: rootColorAnimation
-        ColorAnimation {
-            duration: 200
+    transitions: [
+        Transition {
+            ColorAnimation {
+                targets: root
+                properties: "color"
+                duration: 200
+            }
+            ColorAnimation {
+                targets: root
+                properties: "border.color"
+                duration: 300
+            }
+            NumberAnimation {
+                targets: textColorName
+                properties: "font.pixelSize"
+                duration: 100
+            }
+            NumberAnimation {
+                targets: rowWithButtons
+                properties: "opacity"
+                duration: 300
+            }
         }
-    }
-
-    Behavior on border.color {
-        id: toorBorderAnimation
-        ColorAnimation {
-            duration: 300
-        }
-    }
+    ]
 
     signal removed()
     signal moveDown()
@@ -72,20 +89,13 @@ Rectangle {
     }
 
     Text {
+        id: textColorName
         property int maxTextLength: 25
         text: parent.colorText.length > maxTextLength ? parent.colorText.substring(0, maxTextLength) + "..." : parent.colorText   // + " [" + root.state + "]"
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         anchors.fill: parent
-        font.pixelSize: parent.fontSize
         font.family: "Comic Sans MS"
-
-        Behavior on font.pixelSize {
-            id: fontAnimation
-            NumberAnimation {
-                duration: 100
-            }
-        }
     }
 
     Row {
@@ -148,13 +158,6 @@ Rectangle {
                 onClicked: {
                     root.moveUp();
                 }
-            }
-        }
-
-        Behavior on opacity {
-            id: opacityAnimation
-            NumberAnimation {
-                duration: 300
             }
         }
     }

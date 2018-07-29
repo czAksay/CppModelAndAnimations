@@ -95,6 +95,13 @@ Window {
                                 }
                                 stepSize: 1
                                 Layout.fillWidth:  true
+
+                                Behavior on value {
+                                    id: sliderValueAnimation
+                                    NumberAnimation {
+                                        duration: 250
+                                    }
+                                }
                             }
                         }
                     }
