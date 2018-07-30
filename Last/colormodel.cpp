@@ -12,6 +12,7 @@ ColorModel::ColorModel(QObject *parent) : QAbstractListModel(parent)
     add("Белый", QColor(255,255,255));
     add("Серый", QColor(128,128,128));
     add("Оранжевый", QColor(255,165,0));
+    m_colors.move(0,1);
 }
 
 void ColorModel::add(MyColor color)
@@ -49,26 +50,20 @@ void ColorModel::move(int old_index, int new_index)
     if(hasIndex(old_index, 0) && hasIndex(new_index, 0) && (old_index != new_index))
     {
         QModelIndex parent;
-        //qDebug() << "old_index: " << old_index << "\nnew_index: " << new_index << "\ncount: " << rowCount();
-        if (new_index == rowCount() - 1)
+        //если это предпоследний элемент, перемещаемый на 1 вниз
+        if (new_index == rowCount() - 1 && new_index == old_index + 1)
         {
-            if(beginMoveRows(parent, new_index, new_index, parent, old_index))
-            {
-                m_colors.move(new_index, old_index);
-                endMoveRows();
-            }
+            int tmp = new_index;
+            new_index = old_index;
+            old_index = tmp;
         }
-        else
+        //при перемещении вниз
+        if (new_index > old_index)
+            new_index ++;
+        if(beginMoveRows(parent, old_index, old_index, parent, new_index))
         {
-            if (new_index > old_index)
-            {
-                new_index ++;
-            }
-            if(beginMoveRows(parent, old_index, old_index, parent, new_index))
-            {
-                m_colors.move(old_index, new_index);
-                endMoveRows();
-            }
+            m_colors.move(old_index, new_index);
+            endMoveRows();
         }
     }
 }

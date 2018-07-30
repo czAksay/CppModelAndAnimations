@@ -253,7 +253,6 @@ Window {
 
                                 onMoveDown: {
                                     ColorController.move(index, index + 1);
-                                    //ColorController.move(2, 4);
                                 }
 
                                 onMoveUp: {
@@ -265,8 +264,6 @@ Window {
                                 }
 
                                 onSelected: {
-                                    //canvas.selectedColor = colorItem.currColor;
-                                    //canvas.selectedColor = Qt.binding(function() {return getColorFromSliders()});
                                     var color = colorItem.currColor;
                                     for (var i = 0; i < sliderRepeat.count; i ++)
                                     {
